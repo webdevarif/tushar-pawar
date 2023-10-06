@@ -1,6 +1,20 @@
 ;
 (function($) {
 
+    
+    /*-------------------------------------------------------------------------------
+    Sticky Menu
+    -------------------------------------------------------------------------------*/
+    var header = $('.header-area')
+    $(window).scroll(function () {
+    var scroll = $(window).scrollTop()
+
+    if (scroll >= 250) {
+        header.addClass('sticky-menu')
+    } else {
+        header.removeClass('sticky-menu')
+    }
+    });
 
     $(document).ready(function() {
         /*-------------------------------------------------------------------------------
@@ -19,9 +33,8 @@
         -------------------------------------------------------------------------------*/
         var itemsPerPage = 5;
         var $list = $(".project-banner-list li");
-        var $loadMoreButton = $(".load-more-project");
-        var isLoading = false;
-            
+        var $loadMoreButton = $(".load-all-project");
+
         // Determine if the button should be initially hidden
         if ($list.length <= itemsPerPage) {
             $loadMoreButton.hide();
@@ -32,31 +45,18 @@
 
         $loadMoreButton.on("click", function (e) {
             e.preventDefault();
-            
-            if (isLoading) {
-                return; // Prevent multiple clicks during loading
-            }
-            
-            isLoading = true;
-            $loadMoreButton.find('.load-more-text').text("Loading"); // Change button text to "Loading"
-            
-            setTimeout(function () {
-                var $hiddenItems = $list.filter(":hidden");
-                var itemsToDisplay = $hiddenItems.slice(0, itemsPerPage);
-                isLoading = false;
-                $loadMoreButton.find('.load-more-text').text("Load More"); // Change button text back to "Load More"
-                
-            itemsToDisplay.show();
 
-                // Update the button text and hide it if there are no more hidden items
-                if ($list.filter(":hidden").length === 0) {
-                    $loadMoreButton.hide();
-                } else {
-                    $loadMoreButton.find('.load-more-text').text("Load More");
-                }
-            }, 1000); // 1-second delay
+            var $hiddenItems = $list.filter(":hidden");
+
+            // Show all hidden items
+            $hiddenItems.show();
+
+            // Update the button text and hide it if there are no more hidden items
+            if ($list.filter(":hidden").length === 0) {
+                $loadMoreButton.hide();
+            } 
         });
-        
+
         /*-------------------------------------------------------------------------------
         Testimonial Slider 
         -------------------------------------------------------------------------------*/
